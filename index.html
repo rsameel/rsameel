@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطة رساميل 2030 - Liquid Glass UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#000000',
+                        glass: 'rgba(30, 30, 35, 0.65)',
+                        border: 'rgba(255, 255, 255, 0.12)',
+                        primary: '#0A84FF',   // Blue
+                        secondary: '#BF5AF2', // Purple
+                        accent: '#FFD60A',    // Gold
+                        success: '#30D158',   // Green
+                        danger: '#FF3B30',    // Red
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        '4xl': '40px',
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Base Class */
+        .glass-panel {
+            background: rgba(30, 30, 35, 0.65);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Ambient Background Lighting */
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+        }
+
+        /* Gradients for Text */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #FFD60A, #FF9F0A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-blue {
+            background: linear-gradient(to right, #0A84FF, #5AC8FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-purple {
+            background: linear-gradient(to right, #BF5AF2, #5E5CE6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        @media print {
+            body { background: white !important; color: black !important; }
+            .glass-panel, .glass-card { 
+                background: white !important; 
+                border: 1px solid #ccc !important; 
+                backdrop-filter: none !important;
+                color: black !important;
+                box-shadow: none !important;
+            }
+            .no-print { display: none !important; }
+            .ambient-light { display: none !important; }
+            * { text-shadow: none !important; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary selection:text-white">
+
+    <!-- Ambient Lighting Background -->
+    <div class="ambient-light">
+        <div class="orb w-[500px] h-[500px] bg-primary top-[-100px] left-[-100px] animate-blob"></div>
+        <!-- تم تغيير اللون هنا من bg-secondary إلى bg-orange-600 -->
+        <div class="orb w-[400px] h-[400px] bg-orange-600 top-[40%] right-[-100px] animate-blob animation-delay-2000"></div>
+        <div class="orb w-[300px] h-[300px] bg-accent bottom-[-50px] left-[20%] animate-blob animation-delay-4000 opacity-20"></div>
+    </div>
+
+    <!-- Floating Navigation (Glass Pill) -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-7xl">
+        <div class="glass-panel rounded-full px-6 py-4 flex justify-between items-center h-20">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-accent to-yellow-600 flex items-center justify-center shadow-lg shadow-accent/20">
+                    <i class="fa-solid fa-building-columns text-black text-lg"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black tracking-tight text-white leading-none">رساميل</span>
+                    <span class="text-[10px] text-white/60 font-light tracking-widest uppercase mt-1">Real Estate & Inv.</span>
+                </div>
+            </div>
+            
+            <div class="hidden lg:flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
+                <a href="#vision" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">الرؤية</a>
+                <a href="#history" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">التاريخ</a>
+                <a href="#sustainability" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">الاستدامة</a>
+                <a href="#market" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">السوق</a>
+                <a href="#digital" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">التحول</a>
+                <a href="#marketing" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90 text-accent font-bold">التسويق</a>
+                <a href="#innovation" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">الابتكار</a>
+                <a href="#operations" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">العمليات</a>
+                <a href="#restructuring" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">الهيكلة</a>
+                <a href="#valuation" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">المليارية</a>
+                <a href="#funds" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">الصناديق</a>
+                <a href="#investment-focus" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90">الاستثمار</a>
+                <a href="#roadmap" class="px-2 py-2 rounded-full text-[10px] font-medium bg-white/10 text-white shadow-inner">الخطة</a>
+                <a href="#execution" class="px-2 py-2 rounded-full text-[10px] font-medium hover:bg-white/10 transition-colors text-white/90 text-success">التنفيذ</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="vision" class="relative pt-40 pb-20 px-4 min-h-screen flex flex-col justify-center items-center text-center">
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full mb-8 animate-float">
+                <span class="w-2 h-2 rounded-full bg-success shadow-[0_0_10px_#30D158]"></span>
+                <span class="text-sm font-medium text-white/80">رؤية رساميل</span>
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl font-black mb-6 leading-tight tracking-tight">
+                رؤية <span class="text-gradient-gold">رساميل</span>
+                <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/50">2030</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto font-light leading-relaxed mb-12">
+                استراتيجية التحول المؤسسي لبناء كيان عقاري مستدام ومواكب لتطلعات المستقبل في المدينة المنورة.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="glass-card p-6 rounded-3xl text-center group">
+                    <div class="text-4xl font-black text-primary mb-1 group-hover:scale-110 transition-transform duration-300">+25</div>
+                    <div class="text-sm text-white/60 font-light">سنة من الخبرة العريقة</div>
+                </div>
+                <div class="glass-card p-6 rounded-3xl text-center group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-accent/10 blur-xl group-hover:bg-accent/20 transition-colors duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="text-4xl font-black text-accent mb-1 group-hover:scale-110 transition-transform duration-300">2030</div>
+                        <div class="text-sm text-white/60 font-light">آفاق الريادة</div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-3xl text-center group">
+                    <div class="text-4xl font-black text-success mb-1 group-hover:scale-110 transition-transform duration-300">100+</div>
+                    <div class="text-sm text-white/60 font-light">سنة استدامة مستهدفة</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NEW SECTION: Company History -->
+    <section id="history" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-accent text-sm font-bold tracking-widest uppercase mb-2 block">تراثنا العريق</span>
+                <h2 class="text-4xl font-bold text-white mb-4">مسيرة النجاح: من التأسيس إلى الريادة</h2>
+                <p class="text-white/50 max-w-2xl mx-auto">أكثر من 25 عاماً من الالتزام والمصداقية في سوق المدينة المنورة، بنينا خلالها صرحاً عقارياً شامخاً.</p>
+            </div>
+
+            <div class="glass-panel p-8 md:p-12 rounded-[40px] border border-white/10 relative">
+                <!-- Vertical Line -->
+                <div class="absolute left-8 md:left-1/2 top-12 bottom-12 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent md:transform md:-translate-x-1/2"></div>
+
+                <div class="space-y-12">
+                    
+                    <!-- Milestone 1 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <div class="md:w-5/12 mb-4 md:mb-0 text-right md:text-left pl-12 md:pl-0">
+                            <h3 class="text-2xl font-bold text-accent mb-2">اليوم الأول: التأسيس</h3>
+                            <p class="text-white/60 text-sm leading-relaxed">
+                                انطلقت "رساميل" برؤية طموحة لخدمة سوق المدينة المنورة، معتمدة على قيم الأمانة والمصداقية كحجر أساس لكل التعاملات.
+                            </p>
+                        </div>
+                        <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-accent border-4 border-black shadow-[0_0_15px_#FFD60A] z-10"></div>
+                        <div class="md:w-5/12 pl-12 md:pl-0"></div>
+                    </div>
+
+                    <!-- Milestone 2 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <div class="md:w-5/12 order-2 md:order-1 pl-12 md:pl-0"></div>
+                        <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-white border-4 border-black z-10 group-hover:bg-accent transition-colors"></div>
+                        <div class="md:w-5/12 mb-4 md:mb-0 order-1 md:order-2 pl-12 md:pl-0">
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-accent transition-colors">عقد البناء والثقة</h3>
+                            <p class="text-white/60 text-sm leading-relaxed">
+                                سنوات من العمل الدؤوب لبناء قاعدة عملاء صلبة، وتوسيع شبكة العلاقات مع كبار المستثمرين وملاك العقارات في المنطقة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 3 -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <div class="md:w-5/12 mb-4 md:mb-0 text-right md:text-left pl-12 md:pl-0">
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-accent transition-colors">التوسع والنمو</h3>
+                            <p class="text-white/60 text-sm leading-relaxed">
+                                الدخول في مشاريع استثمارية نوعية وتطوير المحفظة العقارية لتشمل أصولاً متنوعة، مما عزز مكانة الشركة كلاعب رئيسي في السوق.
+                            </p>
+                        </div>
+                        <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-white border-4 border-black z-10 group-hover:bg-accent transition-colors"></div>
+                        <div class="md:w-5/12 pl-12 md:pl-0"></div>
+                    </div>
+
+                    <!-- Milestone 4 (Today) -->
+                    <div class="relative flex flex-col md:flex-row items-center justify-between group">
+                        <div class="md:w-5/12 order-2 md:order-1 pl-12 md:pl-0"></div>
+                        <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-primary border-4 border-black shadow-[0_0_20px_#0A84FF] z-10 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                        <div class="md:w-5/12 mb-4 md:mb-0 order-1 md:order-2 pl-12 md:pl-0">
+                            <span class="inline-block px-2 py-1 bg-primary/20 text-primary text-[10px] rounded mb-2 font-bold">نحن هنا</span>
+                            <h3 class="text-2xl font-bold text-white mb-2">2025: مرحلة التحول</h3>
+                            <p class="text-white/60 text-sm leading-relaxed">
+                                تقف "رساميل" اليوم على أرض صلبة، مستندة إلى تاريخها العريق، لتطلق استراتيجيتها الجديدة نحو المئوية الأولى والتحول المؤسسي الشامل.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Institutional Sustainability -->
+    <section id="sustainability" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                    <h2 class="text-4xl font-bold text-white mb-2">الاستدامة المؤسسية</h2>
+                    <p class="text-lg text-white/50 font-light">ترسيخ العمل المؤسسي لضمان النمو والاستمرارية</p>
+                </div>
+                <div class="h-[1px] flex-grow bg-gradient-to-l from-transparent via-white/20 to-transparent mx-8"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Governance -->
+                <div class="glass-panel rounded-4xl p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/20 blur-3xl rounded-full -mr-10 -mt-10 transition-all duration-700 group-hover:bg-secondary/30"></div>
+                    
+                    <div class="w-16 h-16 rounded-2xl bg-secondary/20 flex items-center justify-center mb-8 border border-secondary/20 shadow-[0_0_30px_rgba(191,90,242,0.15)]">
+                        <i class="fa-solid fa-scale-balanced text-2xl text-secondary"></i>
+                    </div>
+                    
+                    <h3 class="text-3xl font-bold text-white mb-4">الحوكمة والتنظيم</h3>
+                    <p class="text-white/70 mb-8 leading-relaxed">تطوير الهيكل الإداري ليتوافق مع أفضل ممارسات الحوكمة، بما يضمن سلاسة اتخاذ القرار ووضوح الصلاحيات.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-file-contract text-secondary text-xl"></i>
+                            <div>
+                                <strong class="block text-white text-sm">إطار العلاقات والملكيات</strong>
+                                <span class="text-xs text-white/50">تنظيم آليات التخارج والشراكة بوضوح</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-3 bg-white/5 p-5 rounded-2xl border border-white/5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary shrink-0">
+                                    <i class="fa-solid fa-user-tie text-lg"></i>
+                                </div>
+                                <div>
+                                    <strong class="block text-white text-sm">مأسسة الإدارة</strong>
+                                    <span class="text-xs text-white/50">الفصل المهني بين أدوار الملاك والإدارة التنفيذية</span>
+                                </div>
+                            </div>
+                            <ul class="text-xs text-white/60 space-y-2 pr-14 list-disc marker:text-secondary">
+                                <li><strong>معايير الجدارة:</strong> إسناد المناصب القيادية بناءً على الكفاءة والخبرة المهنية.</li>
+                                <li><strong>تمكين الإدارة:</strong> منح الصلاحيات اللازمة للعمليات التشغيلية اليومية.</li>
+                                <li><strong>مؤشرات الأداء:</strong> اعتماد معايير قياس واضحة لتقييم النتائج والمخرجات.</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Leaders -->
+                <div class="glass-panel rounded-4xl p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full -mr-10 -mt-10 transition-all duration-700 group-hover:bg-primary/30"></div>
+                    
+                    <div class="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-8 border border-primary/20 shadow-[0_0_30px_rgba(10,132,255,0.15)]">
+                        <i class="fa-solid fa-users-viewfinder text-2xl text-primary"></i>
+                    </div>
+                    
+                    <h3 class="text-3xl font-bold text-white mb-4">بناء القدرات القيادية</h3>
+                    <p class="text-white/70 mb-8 leading-relaxed">الاستثمار في رأس المال البشري وتجهيز صف ثانٍ من القيادات لضمان استدامة الرؤية.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-user-graduate text-primary text-xl"></i>
+                            <div>
+                                <strong class="block text-white text-sm">نقل المعرفة والخبرات</strong>
+                                <span class="text-xs text-white/50">برامج للملازمة الميدانية واكتساب الخبرات الضمنية من القيادات الحالية</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-rocket text-primary text-xl"></i>
+                            <div>
+                                <strong class="block text-white text-sm">التطوير التنفيذي</strong>
+                                <span class="text-xs text-white/50">الاستثمار في برامج التعليم المتقدم (MBA) وإدارة المشاريع</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Market Strategy (UPDATED with Q3 2025 Data) -->
+    <section id="market" class="py-24 relative overflow-hidden">
+        <!-- Background element for section distinction -->
+        <div class="absolute inset-0 bg-white/[0.02] -skew-y-3 transform scale-110 z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <span class="text-accent text-sm font-bold tracking-widest uppercase mb-2 block">تحليل السوق (إغلاق 2025)</span>
+                    <h2 class="text-4xl font-bold text-white">الفرص الاستراتيجية في المدينة المنورة</h2>
+                </div>
+                <div class="mt-4 md:mt-0 glass-card px-4 py-2 rounded-full border-danger/30 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-danger animate-pulse"></span>
+                    <span class="text-danger font-bold text-sm">مؤشرات السوق (Q3 2025: -8.0%)</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Invest -->
+                <div class="glass-card p-8 rounded-4xl border-t-4 border-t-success hover:bg-white/5">
+                    <h3 class="text-2xl font-bold text-success mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        مسار الاستثمار
+                    </h3>
+                    <p class="text-white/80 leading-relaxed mb-6 text-sm">
+                        دراسة الفرص المتاحة لبناء محفظة أصول استراتيجية (Land Banking) بالاستفادة من المؤشرات السعرية الحالية التي تظهر تراجعاً في الأسعار، مما قد يشكل نقطة دخول مناسبة.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-lg bg-success/10 text-success text-xs font-bold border border-success/20">الأصول الاستراتيجية</span>
+                        <span class="px-3 py-1 rounded-lg bg-success/10 text-success text-xs font-bold border border-success/20">الاستثمار المؤسسي</span>
+                    </div>
+                </div>
+
+                <!-- Develop -->
+                <div class="glass-card p-8 rounded-4xl border-t-4 border-t-accent hover:bg-white/5">
+                    <h3 class="text-2xl font-bold text-accent mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-city"></i>
+                        مسار التطوير
+                    </h3>
+                    <p class="text-white/80 leading-relaxed mb-6 text-sm">
+                        التوجه نحو تطوير المجتمعات السكنية النوعية (Compounds) والمشاريع بنظام البيع على الخارطة، لتلبية الطلب على المنتجات السكنية الحديثة وسد الفجوة في المعروض.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 rounded-lg bg-accent/10 text-accent text-xs font-bold border border-accent/20">المشاريع النوعية</span>
+                        <span class="px-3 py-1 rounded-lg bg-accent/10 text-accent text-xs font-bold border border-accent/20">العملاء النخبة</span>
+                    </div>
+                </div>
+
+                <!-- Services (EXPANDED) -->
+                <div class="glass-card p-8 rounded-4xl border-t-4 border-t-primary hover:bg-white/5">
+                    <h3 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-briefcase"></i>
+                        مسار الخدمات المتكاملة والمبتكرة
+                    </h3>
+                    <p class="text-white/80 leading-relaxed mb-6 text-sm">
+                        تنويع مصادر الدخل عبر حزمة خدمات عقارية ذكية تضمن التدفق النقدي المستمر (Recurring Revenue) وتواكب خصوصية سوق المدينة المنورة.
+                    </p>
+                    <div class="space-y-4">
+                        <!-- Sustainable Income -->
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs shrink-0"><i class="fa-solid fa-building-user"></i></div>
+                            <div class="text-white text-xs">
+                                <strong class="block text-white mb-1">إدارة الأملاك والمرافق (PM & FM):</strong>
+                                <span>عقود تشغيل وصيانة طويلة الأمد للمباني التجارية والسكنية (دخل ثابت ومستدام).</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Innovative Service (Madinah Context) -->
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs shrink-0"><i class="fa-solid fa-bed"></i></div>
+                            <div class="text-white text-xs">
+                                <strong class="block text-white mb-1">إدارة وحدات الضيافة (Hospitality):</strong>
+                                <span>خدمة مبتكرة لتشغيل الوحدات السكنية بنظام التأجير قصير المدى لزوار المدينة المنورة (عوائد استثمارية أعلى).</span>
+                            </div>
+                        </div>
+
+                        <!-- Community Management -->
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs shrink-0"><i class="fa-solid fa-users-gear"></i></div>
+                            <div class="text-white text-xs">
+                                <strong class="block text-white mb-1">إدارة جمعيات الملاك:</strong>
+                                <span>إدارة الأحياء والمجمعات السكنية لضمان جودة الحياة واستدامة قيمة الأصول.</span>
+                            </div>
+                        </div>
+
+                        <!-- Investment Products -->
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs shrink-0"><i class="fa-solid fa-chart-pie"></i></div>
+                            <div class="text-white text-xs">
+                                <strong class="block text-white mb-1">هيكلة المنتجات الاستثمارية:</strong>
+                                <span>تأسيس وإدارة محافظ عقارية خاصة وصناديق استثمارية مغلقة للمستثمرين (رسوم إدارة + أداء).</span>
+                            </div>
+                        </div>
+
+                        <!-- Professional Services -->
+                        <div class="flex items-start gap-3">
+                            <div class="mt-1 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs shrink-0"><i class="fa-solid fa-file-signature"></i></div>
+                            <div class="text-white text-xs">
+                                <strong class="block text-white mb-1">التقييم والدراسات:</strong>
+                                <span>تقديم تقارير التقييم المعتمدة ودراسات الجدوى كبيت خبرة موثوق.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Data/Brands Asset Block -->
+            <div class="mt-8 glass-panel p-8 rounded-3xl relative overflow-hidden group border-primary/30">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
+                <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-1/3 text-center md:text-right">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/20 text-primary mb-4 border border-primary/20 shadow-[0_0_20px_rgba(10,132,255,0.15)]">
+                            <i class="fa-solid fa-database text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">الأصول المعلوماتية والعلاقات</h3>
+                        <p class="text-white/60 text-sm">توظيف قاعدة البيانات والعلاقات الاستراتيجية كأدوات تمكين رئيسية.</p>
+                    </div>
+                    <div class="w-full md:w-2/3 border-t md:border-t-0 md:border-r border-white/10 pt-6 md:pt-0 md:pr-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-users text-accent"></i>
+                                شبكة العلاقات الاستثمارية
+                            </h4>
+                            <p class="text-xs text-white/50 leading-relaxed">
+                                الاستفادة من قاعدة المستثمرين لدعم عمليات الطرح والتسويق المبكر للمشاريع، مما يساهم في تعزيز التدفقات النقدية.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-tags text-secondary"></i>
+                                الشراكات التجارية
+                            </h4>
+                            <p class="text-xs text-white/50 leading-relaxed">
+                                تفعيل الشراكات مع العلامات التجارية المرموقة لرفع قيمة الأصول التجارية وضمان جودة التشغيل.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 3: Digital Transformation -->
+    <section id="digital" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass-panel rounded-[50px] overflow-hidden border border-white/10 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-12 min-h-[500px]">
+                    
+                    <!-- Left: Content -->
+                    <div class="md:col-span-7 p-12 md:p-16 flex flex-col justify-center relative">
+                        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 to-transparent pointer-events-none"></div>
+                        
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center mb-8 shadow-lg shadow-primary/30">
+                            <i class="fa-solid fa-laptop-code text-white text-2xl"></i>
+                        </div>
+
+                        <h2 class="text-4xl font-bold text-white mb-6">التقنية كأداة تمكين (Phygital)</h2>
+                        <p class="text-white/60 mb-10 text-lg leading-relaxed">
+                            نؤمن بأن العقار أصل عالي القيمة وقرار شراؤه يستغرق وقتاً طويلاً (أشهر إلى سنة). لذا، لا تهدف تقنيتنا لاستبدال الإنسان، بل لخدمة العميل وتزويده بالبيانات الدقيقة طوال فترة اتخاذ القرار، ليكون العنصر البشري هو الركيزة في إتمام الصفقة.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="glass-card p-5 rounded-2xl border-l-2 border-l-primary">
+                                <h4 class="text-white font-bold mb-2">للعملاء (دعم القرار)</h4>
+                                <ul class="text-sm text-white/60 space-y-1">
+                                    <li>• عرض تفاعلي للبيانات والفرص</li>
+                                    <li>• أدوات تواصل مستمر لبناء الثقة</li>
+                                    <li>• متابعة رحلة الشراء طويلة المدى</li>
+                                </ul>
+                            </div>
+                            <div class="glass-card p-5 rounded-2xl border-l-2 border-l-secondary">
+                                <h4 class="text-white font-bold mb-2">للمؤسسة (الكفاءة)</h4>
+                                <ul class="text-sm text-white/60 space-y-1">
+                                    <li>• إدارة علاقات العملاء (CRM) للبيع المعقد</li>
+                                    <li>• تحليل سلوك المستثمر</li>
+                                    <li>• أتمتة الإجراءات الإدارية</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Visual/Identity -->
+                    <div class="md:col-span-5 bg-white/5 relative flex flex-col justify-center p-12 border-t md:border-t-0 md:border-r border-white/10 backdrop-blur-sm">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+                        
+                        <h3 class="text-2xl font-bold text-white mb-8 relative z-10 text-center">الصورة الذهنية والهوية</h3>
+                        
+                        <div class="space-y-4 relative z-10">
+                            <!-- Reputation Marketing Item -->
+                            <div class="glass-card p-4 rounded-xl flex items-center gap-4 bg-primary/10 border-primary/20">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                                    <i class="fa-solid fa-bullhorn"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-white">بناء السمعة</div>
+                                    <div class="text-xs text-white/50">إبراز قصص النجاح وترسيخ الثقة في السوق</div>
+                                </div>
+                            </div>
+
+                            <div class="glass-card p-4 rounded-xl flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-white">الهوية المؤسسية</div>
+                                    <div class="text-xs text-white/50">توحيد المظهر العام بما يعكس الاحترافية</div>
+                                </div>
+                            </div>
+                            <div class="glass-card p-4 rounded-xl flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                                    <i class="fa-solid fa-mug-hot"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-white">تجربة العميل</div>
+                                    <div class="text-xs text-white/50">الارتقاء بمعايير الخدمة والضيافة</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Digital Marketing & Media -->
+    <section id="marketing" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-secondary text-sm font-bold tracking-widest uppercase mb-2 block">صوت ورسالة الشركة</span>
+                <h2 class="text-4xl font-bold text-white mb-4">التسويق الرقمي والإعلام المؤسسي</h2>
+                <p class="text-white/50 max-w-2xl mx-auto">تفعيل إدارة تسويق محترفة لتوثيق الإرث وبناء صورة ذهنية تليق بحجم الطموح.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Pillar 1: Media Documentation -->
+                <div class="glass-panel p-8 rounded-4xl border-t-4 border-t-accent hover:border-accent/50 transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-accent/20 transition-all"></div>
+                    <div class="mb-6 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent text-2xl border border-accent/20">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">توثيق الإرث (Media Archiving)</h3>
+                    <p class="text-white/70 text-sm leading-relaxed mb-4">
+                        إنتاج أفلام وثائقية قصيرة ومحتوى احترافي يسرد قصة نجاح الشركة خلال الـ 25 عاماً الماضية. تحويل التاريخ من "ذكريات شفهية" إلى "أصول إعلامية" تعزز المصداقية أمام المستثمرين والعملاء الجدد.
+                    </p>
+                    <ul class="text-xs text-white/60 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-accent"></i> إنتاج فيلم "قصة رساميل".</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-accent"></i> توثيق مشاريع الشركة البارزة.</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 2: Brand Identity -->
+                <div class="glass-panel p-8 rounded-4xl border-t-4 border-t-primary hover:border-primary/50 transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-primary/20 transition-all"></div>
+                    <div class="mb-6 w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-2xl border border-primary/20">
+                        <i class="fa-solid fa-fingerprint"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">الهوية البصرية (Brand Identity)</h3>
+                    <p class="text-white/70 text-sm leading-relaxed mb-4">
+                        تطوير وتوحيد الهوية البصرية للشركة (Rebranding) لتواكب الروح العصرية ورؤية 2030، مع الحفاظ على أصالة الاسم. يشمل ذلك دليل الهوية (Brand Guidelines)، المطبوعات، والواجهة الرقمية، لضمان ظهور الشركة بمظهر المؤسسة المليارية.
+                    </p>
+                    <ul class="text-xs text-white/60 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> تحديث الشعار والخطوط.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> توحيد نبرة الصوت (Tone of Voice).</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 3: Digital Marketing -->
+                <div class="glass-panel p-8 rounded-4xl border-t-4 border-t-secondary hover:border-secondary/50 transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-secondary/20 transition-all"></div>
+                    <div class="mb-6 w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl border border-secondary/20">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">التسويق الرقمي (Performance)</h3>
+                    <p class="text-white/70 text-sm leading-relaxed mb-4">
+                        تفعيل قنوات التواصل الاجتماعي باستراتيجية محتوى موجهة. التركيز على LinkedIn لاستقطاب المستثمرين والشركاء، ومنصات X و Instagram للعملاء، مع حملات ممولة دقيقة النتائج (ROI-focused).
+                    </p>
+                    <ul class="text-xs text-white/60 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-secondary"></i> إدارة حسابات التواصل الاحترافية.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-secondary"></i> تسويق المحتوى التثقيفي العقاري.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Innovation Culture -->
+    <section id="innovation" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-accent text-sm font-bold tracking-widest uppercase mb-2 block">الحمض النووي للشركة</span>
+                <h2 class="text-4xl font-bold text-white mb-4">الثقافة المؤسسية: سر الاستدامة</h2>
+                <p class="text-white/50 max-w-2xl mx-auto">الابتكار ليس ترفاً، بل هو "إكسير الحياة" الذي يضمن بقاء الشركة لأكثر من 100 عام في عصر متسارع.</p>
+            </div>
+
+            <!-- Lifespan Stats Block -->
+            <div class="glass-panel p-8 rounded-3xl border border-white/10 mb-12 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-danger/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+                
+                <div class="w-full md:w-1/2 relative z-10">
+                    <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-heart-crack text-danger"></i>
+                        لماذا تموت الشركات؟
+                    </h3>
+                    <p class="text-white/70 leading-relaxed mb-4 text-sm">
+                        تشير دراسات (McKinsey) إلى حقيقة صادمة: انخفض متوسط عمر الشركات من <strong>61 سنة</strong> في الخمسينيات إلى <strong>18 سنة</strong> حالياً، وقد يصل لـ <strong>10 سنوات</strong> فقط.
+                    </p>
+                    <p class="text-white/90 font-bold text-sm border-r-4 border-success pr-4">
+                        الشركات تموت عندما تفضل "الربح السريع" على "التطوير المستمر". في رساميل، نختار الطريق الصعب (الاستدامة).
+                    </p>
+                </div>
+
+                <div class="w-full md:w-1/2 flex justify-center items-end gap-6 h-48 pb-4 relative z-10">
+                    <!-- 1950s Bar -->
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 bg-white/10 rounded-t-xl h-32 relative overflow-hidden group-hover:bg-white/20 transition-all border-t border-white/20">
+                            <div class="absolute bottom-0 w-full h-full bg-gradient-to-t from-white/10 to-transparent"></div>
+                        </div>
+                        <span class="text-[10px] text-white/50">الخمسينيات<br>(61 سنة)</span>
+                    </div>
+                    <!-- Today Bar -->
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-16 bg-danger/20 rounded-t-xl h-12 relative overflow-hidden group-hover:bg-danger/30 transition-all border-t border-danger/40">
+                            <div class="absolute bottom-0 w-full h-full bg-gradient-to-t from-danger/20 to-transparent"></div>
+                        </div>
+                        <span class="text-[10px] text-danger">اليوم<br>(18 سنة)</span>
+                    </div>
+                    <!-- Rasameel Goal -->
+                    <div class="flex flex-col items-center gap-2 group">
+                        <div class="w-20 bg-success/20 rounded-t-xl h-40 relative overflow-hidden group-hover:bg-success/30 transition-all border-t border-success/40 shadow-[0_0_20px_rgba(48,209,88,0.2)]">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-2xl font-black text-white">100+</span>
+                            </div>
+                            <div class="absolute bottom-0 w-full h-1 bg-success"></div>
+                        </div>
+                        <span class="text-[10px] text-success font-bold">هدف رساميل<br>(الاستدامة)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Concepts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
+                
+                <!-- 1. The Mango Theory (Clarified) - Spans 3 cols -->
+                <div class="lg:col-span-3 glass-panel p-8 rounded-3xl border-t-4 border-t-accent hover:bg-white/5 transition-all group">
+                    <div class="flex items-start gap-6">
+                        <div class="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent text-3xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-tree"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">عقلية "البستاني" (نظرية المانجو)</h3>
+                            <p class="text-white/70 text-sm leading-relaxed mb-4">
+                                في عالم الأعمال خياران: زراعة <strong>الذرة</strong> (تحصد كل 3 أشهر لربح سريع ولكنك تعيد الزراعة من الصفر)، أو زراعة <strong>المانجو</strong> (تستغرق 5 سنوات لتثمر، لكنها تظل تطعمك لعقود). نحن في رساميل اخترنا "المانجو": نبني أصولاً وعلاقات راسخة (Roots) ولا نلهث خلف الصفقات الخاطفة (Quick Wins).
+                            </p>
+                            <span class="inline-block bg-accent/20 text-accent text-xs px-3 py-1 rounded-full font-bold">الاستثمار في الجذور</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Amazon Philosophy (Updated) - Spans 3 cols -->
+                <div class="lg:col-span-3 glass-panel p-8 rounded-3xl border-t-4 border-t-white hover:bg-white/5 transition-all group">
+                    <div class="flex items-start gap-6">
+                        <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-white text-3xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-brands fa-amazon"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">درس أمازون: مصارعة الفناء (Day 1)</h3>
+                            <p class="text-white/70 text-sm leading-relaxed mb-4">
+                                يقول جيف بيزوس بوضوح صادم: <strong>"أمازون ليست كبيرة جداً لدرجة تمنع فشلها... يوماً ما ستموت أمازون"</strong>. سر عظمة أمازون ليس في إنكار هذه الحقيقة، بل في العمل بجنون كل يوم لتأخير ذلك اليوم، عبر الحفاظ على عقلية "الشركة الناشئة" (Day 1) والتجريب المستمر. في رساميل، نتبنى هذا "القلق البناء" لنضمن أننا لا نركن للراحة أبداً، بل نتجدد يومياً لنطيل عمر الشركة.
+                            </p>
+                            <span class="inline-block bg-white/20 text-white text-xs px-3 py-1 rounded-full font-bold">التجدد المستمر للبقاء</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Design Thinking - Spans 2 cols -->
+                <div class="lg:col-span-2 glass-panel p-6 rounded-3xl border-t-4 border-t-secondary hover:bg-white/5 transition-all group">
+                    <div class="mb-4 w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users-rays"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">التصميم بالتعاطف</h3>
+                    <p class="text-white/60 text-xs leading-relaxed">
+                        مثل Airbnb، نضع أنفسنا مكان العميل. لا نصمم جدرانًا، بل نحل مشاكل السكن الحقيقية عبر فهم عميق لمعاناتهم واحتياجاتهم اليومية.
+                    </p>
+                </div>
+
+                <!-- 4. 5 Whys - Spans 2 cols -->
+                <div class="lg:col-span-2 glass-panel p-6 rounded-3xl border-t-4 border-t-success hover:bg-white/5 transition-all group">
+                    <div class="mb-4 w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center text-success text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">منهجية الـ 5 Whys</h3>
+                    <p class="text-white/60 text-xs leading-relaxed">
+                        لضمان الجودة (مثل تويوتا)، لا نعالج القشور. نسأل "لماذا" 5 مرات لنصل لجذر المشكلة ونقتلعها، مما يبني نظاماً مؤسسياً حصيناً.
+                    </p>
+                </div>
+
+                <!-- 5. AI & Human - Spans 2 cols -->
+                <div class="lg:col-span-2 glass-panel p-6 rounded-3xl border-t-4 border-t-primary hover:bg-white/5 transition-all group">
+                    <div class="mb-4 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">الذكاء البشري أولاً</h3>
+                    <p class="text-white/60 text-xs leading-relaxed">
+                        الذكاء الاصطناعي هو "المشرط" ونحن "الجراحون". نستخدمه للتحليل، لكن "الحدس البشري" هو القائد الذي يتخذ القرارات المصيرية.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Operational Excellence -->
+    <section id="operations" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-2">التميز التشغيلي والتنظيمي</h2>
+                <p class="text-lg text-white/50 font-light">رفع الكفاءة التشغيلية وتمكين فريق العمل</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Automation Block -->
+                <div class="glass-panel rounded-4xl p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full -mr-10 -mt-10 transition-all duration-700 group-hover:bg-primary/30"></div>
+                    
+                    <div class="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-8 border border-primary/20 shadow-[0_0_30px_rgba(10,132,255,0.15)]">
+                        <i class="fa-solid fa-gears text-2xl text-primary"></i>
+                    </div>
+                    
+                    <h3 class="text-3xl font-bold text-white mb-4">أتمتة العمليات الداخلية</h3>
+                    <p class="text-white/70 mb-8 leading-relaxed">تحويل المعاملات اليومية إلى عمليات رقمية مؤتمتة بالكامل لضمان السرعة والدقة.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-bolt text-primary text-xl"></i>
+                            <div>
+                                <strong class="block text-white text-sm">سرعة الإنجاز</strong>
+                                <span class="text-xs text-white/50">تقليص زمن المعاملات عبر تدفقات عمل إلكترونية (Workflows) وموافقات فورية</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-shield-check text-primary text-xl"></i>
+                            <div>
+                                <strong class="block text-white text-sm">تقليل الأخطاء البشرية</strong>
+                                <span class="text-xs text-white/50">اعتماد أنظمة التحقق الآلي والربط بين الإدارات (ERP) لمنع الازدواجية والتضارب</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Structure & Performance Block -->
+                <div class="glass-panel rounded-4xl p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/20 blur-3xl rounded-full -mr-10 -mt-10 transition-all duration-700 group-hover:bg-secondary/30"></div>
+                    
+                    <div class="w-16 h-16 rounded-2xl bg-secondary/20 flex items-center justify-center mb-8 border border-secondary/20 shadow-[0_0_30px_rgba(191,90,242,0.15)]">
+                        <i class="fa-solid fa-sitemap text-2xl text-secondary"></i>
+                    </div>
+                    
+                    <h3 class="text-3xl font-bold text-white mb-4">هيكلة الفريق والأداء</h3>
+                    <p class="text-white/70 mb-8 leading-relaxed">تحديد الأدوار بدقة وربطها بمستهدفات قابلة للقياس لضمان المحاسبة والتحفيز.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-list-check text-secondary text-xl"></i>
+                            <div>
+                                <strong class="block text-white text-sm">مصفوفة المسؤوليات (RACI)</strong>
+                                <span class="text-xs text-white/50">توصيف وظيفي دقيق يمنع تداخل المهام ويوضح المسؤولية لكل فرد</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-chart-line text-secondary text-xl"></i>
+                            <div>
+                                <strong class="block text-white text-sm">المستهدفات والقياس (KPIs)</strong>
+                                <span class="text-xs text-white/50">ربط تقييم الأداء والمكافآت بتحقيق أهداف رقمية ونوعية محددة مسبقاً</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Restructuring & Leadership -->
+    <section id="restructuring" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-secondary text-sm font-bold tracking-widest uppercase mb-2 block">المحرك البشري</span>
+                <h2 class="text-4xl font-bold text-white mb-4">الهيكلة والقيادات للنمو الصاروخي</h2>
+                <p class="text-white/50 max-w-2xl mx-auto">إعادة هندسة الهيكل التنظيمي وتسكين الكفاءات القيادية المتخصصة لقيادة كل قطاع نحو القمة.</p>
+            </div>
+
+            <div class="glass-panel p-10 rounded-[40px] border border-white/10 relative overflow-hidden">
+                <!-- Background decoration -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+
+                <!-- Org Chart Visual -->
+                <div class="flex flex-col items-center gap-8 relative z-10">
+                    
+                    <!-- Board of Directors (NEW) -->
+                    <div class="glass-card p-8 rounded-3xl border-t-4 border-t-white text-center w-full md:w-2/3 transform hover:scale-105 transition-all duration-300 shadow-[0_0_50px_rgba(255,255,255,0.1)] relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-white/20 transition-all"></div>
+                        
+                        <div class="w-20 h-20 rounded-full bg-white/10 mx-auto flex items-center justify-center text-white text-3xl mb-4 border border-white/20">
+                            <i class="fa-solid fa-people-roof"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">مجلس الإدارة (Board of Directors)</h3>
+                        <p class="text-sm text-white/60 mb-6 max-w-2xl mx-auto">السلطة العليا لرسم الاستراتيجيات وضمان الحوكمة. دورهم ليس التشغيل، بل <strong>تمكين النمو الصاروخي</strong> من خلال:</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-white/70">
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                                <strong class="block text-white mb-1"><i class="fa-solid fa-compass text-accent ml-1"></i> التوجيه الاستراتيجي</strong>
+                                تحديد البوصلة والأسواق المستهدفة واعتماد خطط التوسع الكبرى.
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                                <strong class="block text-white mb-1"><i class="fa-solid fa-network-wired text-success ml-1"></i> العلاقات والنفوذ</strong>
+                                فتح الأبواب المغلقة وتسهيل الشراكات مع الكيانات الكبرى (Networking).
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/5">
+                                <strong class="block text-white mb-1"><i class="fa-solid fa-gavel text-primary ml-1"></i> المساءلة والدعم</strong>
+                                محاسبة الرئيس التنفيذي على النتائج، وتوفير الغطاء المالي والقانوني له.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connectors -->
+                    <div class="hidden md:block w-px h-12 bg-gradient-to-b from-white/50 to-accent/50"></div>
+
+                    <!-- CEO Level -->
+                    <div class="glass-card p-6 rounded-3xl border-t-4 border-t-accent text-center w-full md:w-1/3 transform hover:scale-105 transition-all duration-300 shadow-[0_0_40px_rgba(255,214,10,0.1)]">
+                        <div class="w-16 h-16 rounded-full bg-accent/20 mx-auto flex items-center justify-center text-accent text-2xl mb-4 border border-accent/30">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">الرئيس التنفيذي (CEO)</h3>
+                        <p class="text-xs text-white/50 mt-2">قائد الرؤية والاستراتيجية، المسؤول أمام المجلس عن تحقيق الأرقام المليارية.</p>
+                    </div>
+
+                    <!-- Connectors -->
+                    <div class="hidden md:block w-px h-8 bg-white/10"></div>
+                    <div class="hidden md:block w-3/4 h-px bg-white/10 relative">
+                        <div class="absolute left-0 top-0 w-px h-4 bg-white/10"></div> <!-- Left vertical -->
+                        <div class="absolute right-0 top-0 w-px h-4 bg-white/10"></div> <!-- Right vertical -->
+                        <div class="absolute left-1/3 top-0 w-px h-4 bg-white/10"></div> <!-- Mid-Left vertical -->
+                        <div class="absolute right-1/3 top-0 w-px h-4 bg-white/10"></div> <!-- Mid-Right vertical -->
+                    </div>
+
+                    <!-- Department Heads Level -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
+                        
+                        <!-- CFO -->
+                        <div class="glass-card p-5 rounded-2xl border-t-2 border-t-success text-center hover:bg-white/5 group">
+                            <div class="mb-3 w-10 h-10 rounded-full bg-success/10 mx-auto flex items-center justify-center text-success group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm">المدير المالي (CFO)</h4>
+                            <p class="text-[10px] text-white/40 mt-1">هندسة الاستثمار، إدارة التدفقات، والعلاقة مع الممولين.</p>
+                        </div>
+
+                        <!-- COO -->
+                        <div class="glass-card p-5 rounded-2xl border-t-2 border-t-primary text-center hover:bg-white/5 group">
+                            <div class="mb-3 w-10 h-10 rounded-full bg-primary/10 mx-auto flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-helmet-safety"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm">مدير التشغيل (COO)</h4>
+                            <p class="text-[10px] text-white/40 mt-1">إدارة المشاريع، الجودة، وسرعة التنفيذ الميداني.</p>
+                        </div>
+
+                        <!-- CCO/CMO -->
+                        <div class="glass-card p-5 rounded-2xl border-t-2 border-t-secondary text-center hover:bg-white/5 group">
+                            <div class="mb-3 w-10 h-10 rounded-full bg-secondary/10 mx-auto flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm">المدير التجاري (CCO)</h4>
+                            <p class="text-[10px] text-white/40 mt-1">التسويق، المبيعات، وإدارة العلامة التجارية والسمعة.</p>
+                        </div>
+
+                        <!-- CTO -->
+                        <div class="glass-card p-5 rounded-2xl border-t-2 border-t-white text-center hover:bg-white/5 group">
+                            <div class="mb-3 w-10 h-10 rounded-full bg-white/10 mx-auto flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm">المدير التقني (CTO)</h4>
+                            <p class="text-[10px] text-white/40 mt-1">التحول الرقمي، المنصة، والبيانات.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Internal Fund & PropTech -->
+    <section id="funds" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-secondary text-sm font-bold tracking-widest uppercase mb-2 block">المحركات المالية الذكية</span>
+                <h2 class="text-4xl font-bold text-white mb-4">تعظيم الصندوق الداخلي والاستثمار التقني</h2>
+                <p class="text-white/50 max-w-2xl mx-auto">رؤية استراتيجية لتحويل الموارد المالية الحالية إلى محركات نمو مستدام، وفتح آفاق جديدة في اقتصاد المعرفة.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Real Estate Fund Strategy -->
+                <div class="glass-panel p-8 rounded-4xl border-t-4 border-t-accent hover:border-accent/50 transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-accent/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-accent/20 transition-all"></div>
+                    
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent text-2xl border border-accent/20">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">الصندوق الداخلي (Internal Fund)</h3>
+                            <span class="text-xs text-white/50">تنمية وإدارة رأس المال</span>
+                        </div>
+                    </div>
+
+                    <p class="text-white/70 mb-6 text-sm leading-relaxed">
+                        يُمثل الصندوق المالي ركيزة أساسية للنمو. تكمن الرؤية في تحويله إلى محفظة استثمارية ديناميكية تتفاعل بذكاء مع دورات السوق العقاري لتعظيم العوائد وتقليل المخاطر.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-white font-bold text-sm mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-success"></i> اغتنام الفرص السوقية
+                            </h4>
+                            <p class="text-[11px] text-white/60">دراسة مؤشرات السوق الحالية التي تظهر تراجعاً سعرياً، واستغلالها لتعزيز الأصول الاستراتيجية للشركة في المواقع الحيوية، مما يهيئ لقفزات مستقبلية في القيمة.</p>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-white font-bold text-sm mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-rotate text-accent"></i> ديناميكية المحفظة (Portfolio Dynamics)
+                            </h4>
+                            <p class="text-[11px] text-white/60">اعتماد سياسات مرنة في تدوير الأصول وعدم تجميد السيولة لفترات طويلة، مع التركيز على الفرص التطويرية ذات الدورات الزمنية المدروسة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PropTech / Venture Capital Strategy -->
+                <div class="glass-panel p-8 rounded-4xl border-t-4 border-t-primary hover:border-primary/50 transition-all group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-primary/20 transition-all"></div>
+                    
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-2xl border border-primary/20">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">الاستثمار في التقنية العقارية</h3>
+                            <span class="text-xs text-white/50">آفاق الاقتصاد الجديد</span>
+                        </div>
+                    </div>
+
+                    <p class="text-white/70 mb-6 text-sm leading-relaxed">
+                        النظر إلى التقنية كشريك استراتيجي وليس مجرد أداة. تخصيص جزء من الموارد لاستكشاف فرص التقنية العقارية (PropTech) يفتح أبواباً للابتكار ويعزز المكانة الريادية.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-white font-bold text-sm mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-handshake-simple text-secondary"></i> الشراكات الاستراتيجية
+                            </h4>
+                            <p class="text-[11px] text-white/60">بناء تحالفات أو مساهمات في منصات وحلول تقنية واعدة تخدم القطاع العقاري، مما يوفر للشركة أسبقية في تبني الحلول الحديثة.</p>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-white font-bold text-sm mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-primary"></i> تعزيز القيمة الكلية
+                            </h4>
+                            <p class="text-[11px] text-white/60">تنويع محفظة الأصول لتشمل أصولاً تقنية ومعرفية يساهم في رفع التقييم العام للشركة ويجذب شريحة أوسع من المستثمرين والشركاء.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Billion Strategy (Unicorn Roadmap) -->
+    <section id="valuation" class="py-24 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-bold tracking-widest uppercase mb-4">
+                    <i class="fa-solid fa-gem"></i> استراتيجية المليار
+                </span>
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-6">خارطة طريق "اليونيكورن"</h2>
+                
+                <div class="relative inline-block mb-8">
+                    <div class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FFD60A] via-white to-[#FFD60A] tracking-tight font-[sans-serif]">
+                        1,000,000,000+
+                    </div>
+                    <div class="text-xl md:text-2xl text-white/60 font-bold mt-2">ريال سعودي (Valuation)</div>
+                </div>
+
+                <p class="mt-4 text-white/50 max-w-3xl mx-auto text-lg leading-relaxed">
+                    كيف نضاعف قيمة الشركة؟ المعادلة تكمن في التحول من "مطور عقاري" (مكرر ربحية 1x) إلى "منصة تقنية بملكية أصول" (مكرر ربحية 10x-20x).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Pillar 1: Assets -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-accent/40 transition-colors">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-success/20 rounded-full blur-2xl group-hover:bg-success/30 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-success/10 flex items-center justify-center text-success mb-6 border border-success/20">
+                        <i class="fa-solid fa-map-location-dot text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">1. أصول مليارية</h3>
+                    <p class="text-sm text-white/60 leading-relaxed mb-4">
+                        التركيز على بناء <strong>بنك أراضي (Land Bank)</strong> في مواقع استراتيجية تتقاطع مع مشاريع رؤية 2030 بالمدينة، لتعظيم قيمة الأصول الدفترية (NAV).
+                    </p>
+                </div>
+
+                <!-- Pillar 2: PropTech -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-accent/40 transition-colors">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:bg-primary/30 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 border border-primary/20">
+                        <i class="fa-solid fa-microchip text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">2. التكنولوجيا كأصل</h3>
+                    <p class="text-sm text-white/60 leading-relaxed mb-4">
+                        شركات التقنية العقارية (PropTech) تُقيم بمضاعفات (10x-20x) أعلى من الشركات التقليدية. منصتنا الرقمية يجب أن تكون منتجاً قابلاً للتوسع (Scalable).
+                    </p>
+                </div>
+
+                <!-- Pillar 3: Recurring Revenue -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-accent/40 transition-colors">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/20 rounded-full blur-2xl group-hover:bg-secondary/30 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 border border-secondary/20">
+                        <i class="fa-solid fa-rotate text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">3. الدخل المتكرر</h3>
+                    <p class="text-sm text-white/60 leading-relaxed mb-4">
+                        المستثمرون يفضلون الاستقرار. التحول من "البيع لمرة واحدة" إلى عقود "إدارة وتشغيل" طويلة الأمد يرفع تقييم الشركة بشكل هائل.
+                    </p>
+                </div>
+
+                <!-- Pillar 4: IPO -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group border-accent/40 shadow-[0_0_30px_rgba(255,214,10,0.1)]">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-accent/20 rounded-full blur-2xl group-hover:bg-accent/30 transition-all"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-6 border border-accent/20">
+                        <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">4. الإدراج (IPO)</h3>
+                    <p class="text-sm text-white/60 leading-relaxed mb-4">
+                        الهدف النهائي: طرح الشركة في السوق الموازية (نمو) أو الرئيسية. هذا هو المفتاح لتسييل القيمة ومضاعفة ثروة المؤسسين.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Focus (Renamed from Budget, Prices Removed) -->
+    <section id="investment-focus" class="py-24 relative bg-white/[0.01]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-accent text-sm font-bold tracking-widest uppercase mb-2 block">التركيز المالي</span>
+                <h2 class="text-4xl font-bold text-white">مجالات الاستثمار ذات الأولوية</h2>
+                <p class="mt-4 text-white/50 max-w-2xl mx-auto">توجيه الموارد المالية نحو بناء الأصول المستدامة والبنية التحتية القابلة للتوسع.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Tech -->
+                <div class="glass-card p-6 rounded-3xl border-t-4 border-t-primary hover:bg-white/5 flex flex-col">
+                    <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary mb-4">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">البنية التقنية</h3>
+                    <p class="text-sm text-white/50 mb-4 flex-grow">تطوير المنصة العقارية، نظام CRM، وتطبيقات الجوال.</p>
+                </div>
+
+                <!-- Card 2: Marketing & Reputation -->
+                <div class="glass-card p-6 rounded-3xl border-t-4 border-t-accent hover:bg-white/5 flex flex-col">
+                    <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent mb-4">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">التسويق والسمعة</h3>
+                    <p class="text-sm text-white/50 mb-4 flex-grow">إطلاق الهوية الجديدة، حملات السمعة الرقمية، وإعلانات التدشين.</p>
+                </div>
+
+                <!-- Card 3: Human Capital -->
+                <div class="glass-card p-6 rounded-3xl border-t-4 border-t-secondary hover:bg-white/5 flex flex-col">
+                    <div class="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center text-secondary mb-4">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">رأس المال البشري</h3>
+                    <p class="text-sm text-white/50 mb-4 flex-grow">استقطاب كفاءات، تدريب "قادة المستقبل"، ومستشارين.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Detailed Roadmap (Prices Removed) -->
+    <section id="roadmap" class="py-24 relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <span class="text-secondary text-sm font-bold tracking-widest uppercase mb-2 block">المراحل الزمنية</span>
+                <h2 class="text-4xl font-bold text-white">خارطة الطريق المقترحة (2026 - 2030)</h2>
+            </div>
+
+            <div class="relative pl-8 md:pl-0">
+                <!-- Center Line -->
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-white/20 to-transparent transform -translate-x-1/2"></div>
+                
+                <!-- Mobile Line -->
+                <div class="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-white/10 ml-4"></div>
+
+                <!-- 2026: Foundation -->
+                <div class="mb-16 md:flex justify-between items-center w-full group">
+                    <div class="md:w-5/12 mb-4 md:mb-0"></div>
+                    <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-black border-2 border-primary shadow-[0_0_15px_#0A84FF] z-10 flex items-center justify-center">
+                        <div class="w-2 h-2 rounded-full bg-primary"></div>
+                    </div>
+                    <div class="md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-left">
+                        <div class="glass-card p-6 rounded-3xl relative hover:border-primary/50 transition-colors">
+                            <span class="absolute -top-4 right-4 bg-primary text-white text-xs font-black px-3 py-1 rounded-full">2026</span>
+                            <h3 class="text-xl font-bold text-white mb-2">مرحلة التأسيس والهيكلة</h3>
+                            <ul class="text-sm text-white/60 space-y-2">
+                                <li>• إرساء قواعد الحوكمة والتنظيم</li>
+                                <li>• إطلاق البنية التحتية الرقمية</li>
+                                <li>• بناء المحفظة العقارية الأولية</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2027: Launch -->
+                <div class="mb-16 md:flex flex-row-reverse justify-between items-center w-full group">
+                    <div class="md:w-5/12 mb-4 md:mb-0"></div>
+                    <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-black border-2 border-secondary shadow-[0_0_15px_#BF5AF2] z-10 flex items-center justify-center">
+                        <div class="w-2 h-2 rounded-full bg-secondary"></div>
+                    </div>
+                    <div class="md:w-5/12 pl-12 md:pl-12">
+                        <div class="glass-card p-6 rounded-3xl relative hover:border-secondary/50 transition-colors">
+                            <span class="absolute -top-4 left-4 bg-secondary text-white text-xs font-black px-3 py-1 rounded-full">2027</span>
+                            <h3 class="text-xl font-bold text-white mb-2">مرحلة الانطلاق والتطوير</h3>
+                            <ul class="text-sm text-white/60 space-y-2">
+                                <li>• الحصول على التراخيص اللازمة للمشاريع</li>
+                                <li>• تعزيز الهوية السوقية</li>
+                                <li>• البدء في عمليات التطوير والإنشاء</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2028: Construction & Sales (Added) -->
+                <div class="mb-16 md:flex justify-between items-center w-full group">
+                    <div class="md:w-5/12 mb-4 md:mb-0"></div>
+                    <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-black border-2 border-success shadow-[0_0_15px_#30D158] z-10 flex items-center justify-center">
+                        <div class="w-2 h-2 rounded-full bg-success"></div>
+                    </div>
+                    <div class="md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-left">
+                        <div class="glass-card p-6 rounded-3xl relative hover:border-success/50 transition-colors">
+                            <span class="absolute -top-4 right-4 bg-success text-black text-xs font-black px-3 py-1 rounded-full">2028</span>
+                            <h3 class="text-xl font-bold text-white mb-2">مرحلة التوسع والنمو</h3>
+                            <ul class="text-sm text-white/60 space-y-2">
+                                <li>• تسريع وتيرة الأعمال الإنشائية</li>
+                                <li>• تكثيف أنشطة التسويق والمبيعات</li>
+                                <li>• إطلاق خدمات التشغيل والمرافق</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2029: Automation & Funds -->
+                <div class="mb-16 md:flex flex-row-reverse justify-between items-center w-full group">
+                    <div class="md:w-5/12 mb-4 md:mb-0"></div>
+                    <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-black border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] z-10 flex items-center justify-center">
+                        <div class="w-2 h-2 rounded-full bg-white"></div>
+                    </div>
+                    <div class="md:w-5/12 pl-12 md:pl-12">
+                        <div class="glass-card p-6 rounded-3xl relative hover:border-white/50 transition-colors">
+                            <span class="absolute -top-4 left-4 bg-white text-black text-xs font-black px-3 py-1 rounded-full">2029</span>
+                            <h3 class="text-xl font-bold text-white mb-2">مرحلة النضج المؤسسي</h3>
+                            <ul class="text-sm text-white/60 space-y-2">
+                                <li>• اكتمال التحول الرقمي للعمليات</li>
+                                <li>• بدء تسليم مخرجات المشاريع</li>
+                                <li>• توسيع نطاق الشراكات الاستراتيجية</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2030: Leadership & IPO -->
+                <div class="mb-16 md:flex justify-between items-center w-full group">
+                    <div class="md:w-5/12 mb-4 md:mb-0"></div>
+                    <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-black border-4 border-accent shadow-[0_0_25px_#FFD60A] z-10 flex items-center justify-center text-accent">
+                        <i class="fa-solid fa-crown text-lg"></i>
+                    </div>
+                    <div class="md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-left">
+                        <div class="glass-panel p-8 rounded-3xl relative border-accent/30 shadow-[0_0_30px_rgba(255,214,10,0.1)]">
+                            <span class="absolute -top-4 right-4 bg-accent text-black text-xs font-black px-3 py-1 rounded-full">2030</span>
+                            <h3 class="text-2xl font-black text-accent mb-2">مرحلة الريادة</h3>
+                            <ul class="text-sm text-white/80 space-y-2">
+                                <li>• انتقال المهام للجيل الجديد من القيادات</li>
+                                <li>• الجاهزية الكاملة لملف الطرح العام</li>
+                                <li>• ترسيخ المكانة السوقية الرائدة</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Next Steps (Execution) -->
+    <section id="execution" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-success/10 border border-success/20 text-success text-xs font-bold tracking-widest uppercase mb-4">
+                    <i class="fa-solid fa-flag-checkered"></i> الخطوات العملية
+                </span>
+                <h2 class="text-4xl font-bold text-white">ما بعد الرؤية: خارطة التنفيذ الفوري</h2>
+                
+                <!-- Added Clarification Badge -->
+                <div class="mt-3 mb-2 flex justify-center">
+                    <span class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1 text-xs text-white/70">
+                        <i class="fa-regular fa-circle-check text-success"></i>
+                        تبدأ هذه المرحلة بعد الموافقة المبدئية على الرؤية الجديدة
+                    </span>
+                </div>
+
+                <p class="mt-4 text-white/50 max-w-2xl mx-auto">بمجرد اعتماد الملاك لهذه الرؤية، يتطلب تحويلها إلى واقع ملموس تفعيل مسارين متوازيين وبشكل فوري.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Step 1: Consultants -->
+                <div class="glass-panel p-10 rounded-4xl border-t-4 border-t-primary hover:border-primary/50 transition-all group">
+                    <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-3xl mb-6 border border-primary/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">1. الدراسة المعمقة والخطة التشغيلية</h3>
+                    <p class="text-white/70 mb-6 text-sm leading-relaxed">تخصيص ميزانية أولية للتعاقد مع بيوت خبرة لإجراء دراسات "أعماق" تحول الرؤية إلى أرقام وخطط دقيقة قبل التمويل الكامل.</p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 bg-white/5 p-3 rounded-xl">
+                            <i class="fa-solid fa-calculator text-primary mt-1"></i>
+                            <div>
+                                <strong class="block text-white text-sm">تحديد تكاليف الرؤية:</strong>
+                                <span class="text-xs text-white/50">إجراء دراسة مالية دقيقة لمعرفة التكاليف المتوقعة لتنفيذ كامل الرؤية وحجم الاستثمار المطلوب.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white/5 p-3 rounded-xl">
+                            <i class="fa-solid fa-clipboard-list text-primary mt-1"></i>
+                            <div>
+                                <strong class="block text-white text-sm">الخطة التشغيلية التفصيلية:</strong>
+                                <span class="text-xs text-white/50">رسم خارطة طريق تنفيذية يومية/شهرية (Action Plan) توضح المهام، الموارد، والجداول الزمنية لكل قسم بدقة متناهية.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white/5 p-3 rounded-xl">
+                            <i class="fa-solid fa-microscope text-primary mt-1"></i>
+                            <div>
+                                <strong class="block text-white text-sm">دراسة الأعماق (Deep Dive):</strong>
+                                <span class="text-xs text-white/50">التحقق من جدوى المشاريع وفرضيات السوق بالأرقام والبيانات الواقعية لتقليل المخاطر.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Step 2: CEO Recruitment -->
+                <div class="glass-panel p-10 rounded-4xl border-t-4 border-t-accent hover:border-accent/50 transition-all group">
+                    <div class="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center text-accent text-3xl mb-6 border border-accent/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-user-clock"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">2. الاستقطاب المبكر للرئيس التنفيذي</h3>
+                    <p class="text-white/70 mb-6 text-sm leading-relaxed">عدم الانتظار حتى اكتمال الخطة. البدء فوراً في البحث عن "الرئيس التنفيذي المستقبلي" ليكون شريكاً في صياغة التفاصيل وبناء الفريق.</p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 bg-white/5 p-3 rounded-xl">
+                            <i class="fa-solid fa-user-lock text-accent mt-1"></i>
+                            <div>
+                                <strong class="block text-white text-sm">التفرغ التام (Full Dedication):</strong>
+                                <span class="text-xs text-white/50">تعيين مدير تنفيذي أو قائد للتحول مهمته الوحيدة هي نجاح هذه الرؤية، دون الانشغال بمهام تشغيلية جانبية.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white/5 p-3 rounded-xl">
+                            <i class="fa-solid fa-handshake-angle text-accent mt-1"></i>
+                            <div>
+                                <strong class="block text-white text-sm">الشراكة في التخطيط:</strong>
+                                <span class="text-xs text-white/50">استقطاب القائد من الآن ليشارك في مرحلة الدراسة وصياغة الخطة التشغيلية، مما يخلق التزاماً شخصياً بالتنفيذ.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white/5 p-3 rounded-xl">
+                            <i class="fa-solid fa-jet-fighter text-accent mt-1"></i>
+                            <div>
+                                <strong class="block text-white text-sm">قيادة التنفيذ:</strong>
+                                <span class="text-xs text-white/50">منحه الصلاحيات الكاملة لبناء فريقه وتنفيذ الخطة المعتمدة بمرونة وسرعة.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Factors -->
+    <section class="py-16 relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-3xl text-center bg-white/[0.02]">
+                    <i class="fa-solid fa-hand-holding-heart text-3xl mb-4 text-primary"></i>
+                    <h4 class="font-bold text-white mb-1">الرغبة في التطور</h4>
+                    <p class="text-xs text-white/40">تبني مفاهيم العمل المؤسسي الحديث</p>
+                </div>
+                <div class="glass-card p-6 rounded-3xl text-center bg-white/[0.02]">
+                    <i class="fa-solid fa-sack-dollar text-3xl mb-4 text-accent"></i>
+                    <h4 class="font-bold text-white mb-1">الكفاءة المالية</h4>
+                    <p class="text-xs text-white/40">توجيه الاستثمار نحو الأولويات التقنية والبشرية</p>
+                </div>
+                <div class="glass-card p-6 rounded-3xl text-center bg-white/[0.02]">
+                    <i class="fa-solid fa-stopwatch text-3xl mb-4 text-danger"></i>
+                    <h4 class="font-bold text-white mb-1">اغتنام الفرص</h4>
+                    <p class="text-xs text-white/40">التحرك المدروس وفق معطيات السوق</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 bg-black">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-block w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 mx-auto">
+                <i class="fa-solid fa-building-columns text-white/50"></i>
+            </div>
+            <p class="text-white/40 text-sm mb-2">شركة رساميل العقار المحدودة © 2025</p>
+            <p class="text-white/20 text-xs">المدينة المنورة - المملكة العربية السعودية</p>
+        </div>
+    </footer>
+
+</body>
+</html>
